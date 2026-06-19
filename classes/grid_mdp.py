@@ -79,7 +79,7 @@ class GridMDP:
             return 0
 
     def transition(self, state: State, action: Action, noise=0.0) -> dict[State, float]:
-        """Get the transitions available."""
+        """Get the next states available and the probabilities of each one being reached."""
         if not self.is_reachable(state) or self.is_terminal(state):
             return {}
 

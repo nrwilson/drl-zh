@@ -71,3 +71,5 @@ def test_grid_mdp(grid: Grid):
     assert_almost_equal(p[State(2, 1)], 0.8)
     assert_almost_equal(p[State(2, 2)], 0.1)
     assert_almost_equal(p[State(2, 0)], 0.1)
+
+    return GRID_MDP
