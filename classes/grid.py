@@ -2,7 +2,7 @@ from classes.cell import Cell
 
 
 class Grid:
-    """The definition of the grid in the Grid World."""
+    """A Grid defines the geometry of the world and location of start, target, etc."""
 
     def __init__(self, spec: list[str]):
         """Creates the grid.

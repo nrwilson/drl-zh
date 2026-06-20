@@ -2,11 +2,14 @@ import numpy as np
 from classes.grid_mdp import GridMDP
 from classes.state import State
 from classes.action import Action
+from classes.q_table import QTable
 import random
 
 
 class GridEnv:
-    """A reinforcement learning environment to interact with the Grid World and sample from it."""
+    """
+    A GridEnv lets you try out a grid and see what your agent does.
+    A reinforcement learning environment to interact with the Grid World and sample from it."""
 
     def __init__(self, mdp: GridMDP):
         """Initializes the GridEnv."""
@@ -40,3 +43,15 @@ class GridEnv:
         self.state = next_state
         self.terminated = self.mdp.is_terminal(self.state)
         return (self.state, reward, self.terminated)
+
+    def random_step(self, q_table: QTable, noise=0.0):
+        state = self.state
+        random_action = q_table.random_action(state)
+        result = self.step(random_action)
+        return result
+
+    def smart_step(self, q_table: QTable, noise=0.0):
+        state = self.state
+        best_action = q_table.best_action(state)
+        result = self.step(best_action)
+        return result

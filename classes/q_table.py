@@ -4,7 +4,10 @@ from classes.action import Action
 
 
 class QTable:
-    """Table storing Q, i.e., the state-action values.
+    """
+    A Q table stores the current beliefs of the value of each action from each state.
+    
+    Table storing Q, i.e., the state-action values.
 
     This is not an optimal implementation, but hopefully useful for learning purposes.
     """
@@ -55,3 +58,9 @@ class QTable:
                 best_action = action
                 best_value = value
         return best_action
+
+    def random_action(self, state: State) -> Action:
+        actions = list(self.table[state].keys())
+        # Use random.shuffle to shuffle the actions (in case multiple have the same value).
+        random.shuffle(actions)
+        return actions[0]

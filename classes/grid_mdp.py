@@ -7,7 +7,9 @@ from classes.cell import Cell
 
 
 class GridMDP:
-    """Class modeling the Grid World Markov Decision Process (MDP).
+    """
+    A GridMDP defines how to interact with a grid, including determining action probabilities.
+    Class modeling the Grid World Markov Decision Process (MDP).
 
     It defines the transition and reward functions, as well as states and gamma factor.
     """
@@ -38,7 +40,7 @@ class GridMDP:
     def is_terminal(self, state: State) -> bool:
         """Determines if the `state` is a terminal state."""
         cell = self.observe(state)
-        is_terminal = cell == Cell.TARGET or cell == Cell.BOMB
+        is_terminal = cell == Cell.TARGET or cell == Cell.BOMB or cell == Cell.NETHER or cell == Cell.GAME_WIN
         return is_terminal
 
     def is_reachable(self, state: State) -> bool:
@@ -75,6 +77,10 @@ class GridMDP:
             return 1.0
         elif self.observe(next_state) == Cell.BOMB:
             return -1.0
+        elif self.observe(next_state) == Cell.NETHER:
+            return -10.0
+        elif self.observe(next_state) == Cell.GAME_WIN:
+            return 10.0
         else:
             return 0
 
