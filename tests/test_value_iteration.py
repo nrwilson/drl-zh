@@ -3,6 +3,8 @@ from classes.q_table import QTable
 from classes.state import State
 from classes.action import Action
 from init.init_simulation import init_random
+# from util.gridworld import plot_grid
+
 
 
 def value_iteration(mdp: GridMDP, noise=0.0, n_iterations=100) -> QTable:
@@ -55,3 +57,6 @@ def test_value_iteration(mdp: GridMDP):
     assert f"{qtable.value(State(1, 2)):.2f}" == "0.83"
     assert f"{qtable.value(State(2, 2)):.2f}" == "0.94"
     assert f"{qtable.value(State(3, 2)):.2f}" == "0.00"
+
+    # Using provided utilities, we can print the state values of the Grid World!
+    # _, _ = plot_grid(mdp.grid, qtable)
