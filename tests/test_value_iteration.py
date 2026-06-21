@@ -20,7 +20,7 @@ def value_iteration(mdp: GridMDP, noise=0.0, n_iterations=100) -> QTable:
         #       update-rule defined above (i.e., prob * (reward + gamma * state_value))
         for state in mdp.all_states:
             for action in mdp.all_actions:
-                transition_probabilities = mdp.transition(state, action, noise)
+                transition_probabilities = mdp.get_transition_probabilities(state, action, noise)
                 for next_state, probability in transition_probabilities.items():
                     # P => probabililty of going to the nex state
                     # R => the immediate reward for that next state (bomb or target or 0.0)

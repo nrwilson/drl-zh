@@ -9,5 +9,5 @@ class Cell(StrEnum):
     EMPTY = "E"
     WALL = "W"
     BOMB = "B"
-    NETHER = "N"
+    NUKE = "N"
     GAME_WIN = "G"

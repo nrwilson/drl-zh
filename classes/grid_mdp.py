@@ -4,6 +4,7 @@ from classes.action import Action
 from collections import defaultdict
 from numpy.testing import assert_almost_equal
 from classes.cell import Cell
+import random
 
 
 class GridMDP:
@@ -40,7 +41,7 @@ class GridMDP:
     def is_terminal(self, state: State) -> bool:
         """Determines if the `state` is a terminal state."""
         cell = self.observe(state)
-        is_terminal = cell == Cell.TARGET or cell == Cell.BOMB or cell == Cell.NETHER or cell == Cell.GAME_WIN
+        is_terminal = cell == Cell.TARGET or cell == Cell.BOMB or cell == Cell.NUKE or cell == Cell.GAME_WIN
         return is_terminal
 
     def is_reachable(self, state: State) -> bool:
@@ -77,14 +78,17 @@ class GridMDP:
             return 1.0
         elif self.observe(next_state) == Cell.BOMB:
             return -1.0
-        elif self.observe(next_state) == Cell.NETHER:
+        elif self.observe(next_state) == Cell.NUKE:
             return -10.0
         elif self.observe(next_state) == Cell.GAME_WIN:
             return 10.0
         else:
             return 0
 
-    def transition(self, state: State, action: Action, noise=0.0) -> dict[State, float]:
+    def transition(self, state: State, action: Action) -> dict[State, float]:
+        return self.get_transition_probabilities(state, action, noise=0.0)
+
+    def get_transition_probabilities(self, state: State, action: Action, noise: float) -> dict[State, float]:
         """Get the next states available and the probabilities of each one being reached."""
         if not self.is_reachable(state) or self.is_terminal(state):
             return {}
@@ -154,3 +158,10 @@ class GridMDP:
         assert_almost_equal(sum(probs.values()), 1.0)
 
         return probs
+
+    def resolve_next_state(self, state: State, action: Action, noise: float) -> State:
+        transition_probabilities = self.get_transition_probabilities(state, action, noise)
+        items = list(transition_probabilities.keys())
+        weights = list(transition_probabilities.values())
+        next_state = random.choices(items, weights=weights, k=1)[0]
+        return next_state

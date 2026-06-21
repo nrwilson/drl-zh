@@ -8,7 +8,7 @@ import random
 
 class GridEnv:
     """
-    A GridEnv lets you try out a grid and see what your agent does.
+    A GridEnv lets you interact with a GridMDP and take actions on it and sample rewards.
     A reinforcement learning environment to interact with the Grid World and sample from it."""
 
     def __init__(self, mdp: GridMDP):
@@ -23,7 +23,7 @@ class GridEnv:
         self.terminated = False
         return self.state
 
-    def step(self, action: Action) -> tuple[State, float, bool]:
+    def step(self, action: Action, noise: float=0.2) -> tuple[State, float, bool]:
         """Performs a step in the environment given the selected `action` by the agent.
 
         Returns a tuple of (next_state, reward, is_done), with the next state after the action has
@@ -35,23 +35,20 @@ class GridEnv:
         #: Compute the state probabilities for the action, sample the probabilities to select
         #       the next state, calculate the reward, determine if the next_state is terminal, and
         #       return the tuple (next_state, reward, done).
-        transition_probabilities = self.mdp.transition(self.state, action)
-        items = list(transition_probabilities.keys())
-        weights = list(transition_probabilities.values())
-        next_state = random.choices(items, weights=weights, k=1)[0]
+        next_state = self.mdp.resolve_next_state(self.state, action, noise)
         reward = self.mdp.reward(self.state, action, next_state)
         self.state = next_state
         self.terminated = self.mdp.is_terminal(self.state)
         return (self.state, reward, self.terminated)
 
-    def random_step(self, q_table: QTable, noise=0.0):
+    def random_action_step(self, q_table: QTable, noise=0.0):
         state = self.state
-        random_action = q_table.random_action(state)
-        result = self.step(random_action)
+        target_action = q_table.random_action(state)
+        result = self.step(target_action, noise)
         return result
 
-    def smart_step(self, q_table: QTable, noise=0.0):
+    def best_action_step(self, q_table: QTable, noise):
         state = self.state
-        best_action = q_table.best_action(state)
-        result = self.step(best_action)
+        target_action = q_table.best_action(state)
+        result = self.step(target_action, noise)
         return result

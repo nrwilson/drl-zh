@@ -1,5 +1,7 @@
 import os
 import random
+import subprocess
+import sys
 import tempfile
 
 from enum import Enum, StrEnum
@@ -296,11 +298,11 @@ def plot_grid(grid, qtable=None, agent_pos: tuple[int, int] = None):
     ax.axes.get_xaxis().set_ticklabels([])
     ax.axes.get_yaxis().set_ticklabels([])
     ax.grid()
-    # plt.show()
+    plt.show()
     return fig, PlotData(grid, ax, agent_marker, state_value_texts)
 
 
-def run_simulation(mdp, policy, max_iterations=20, frames_per_state=10):
+def run_simulation(mdp, policy, max_iterations=20, frames_per_state=10, live=False):
     steps = simulate_mdp(mdp, policy, max_iterations)
 
     # Compute cumulative returns for convenience
@@ -309,7 +311,8 @@ def run_simulation(mdp, policy, max_iterations=20, frames_per_state=10):
         returns.append(returns[i] + s.reward)
 
     fig, data = plot_grid(mdp.grid, agent_pos=mdp.start.pos())
-    plt.close(fig)
+    if not live:
+        plt.close(fig)
 
     def animate(frame):
         state_frame = frame // frames_per_state
@@ -346,10 +349,22 @@ def run_simulation(mdp, policy, max_iterations=20, frames_per_state=10):
 
     anim = animation.FuncAnimation(fig, animate, frames=len(steps) * frames_per_state, interval=50)
 
+    if live:
+        # Without blitting the marker must not be flagged animated, or it
+        # never gets drawn. Show a real window and block until it is closed.
+        data.agent_marker.set_animated(False)
+        plt.show()
+        return anim
+
     # Temporary workaround to avoid:
     #   UserWarning: Animation was deleted without rendering anything.
     f = os.path.join(tempfile.gettempdir(), "rl_animation.gif")
     writergif = animation.PillowWriter(fps=20)
     anim.save(f, writer=writergif)
     plt.close()
+    # In a terminal run there is no notebook to render the returned Image,
+    # so open the generated GIF in the default viewer.
+    if sys.stdout.isatty():
+        print(f"Animation saved to {f}")
+        subprocess.run(["open", f])
     return Image(open(f, "rb").read())

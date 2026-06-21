@@ -64,3 +64,7 @@ class QTable:
         # Use random.shuffle to shuffle the actions (in case multiple have the same value).
         random.shuffle(actions)
         return actions[0]
+
+    def list_actions(self, state: State) -> [Action]:
+        actions = list(self.table[state].keys())
+        return actions
