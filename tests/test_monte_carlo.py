@@ -8,7 +8,7 @@ from util.gridworld import run_simulation
 
 def test_monte_carlo(mdp):
 
-    NUM_EPISODES = 10000
+    NUM_EPISODES = 100000
     ENV = GridEnv(mdp)
 
     # With minimal exploration
