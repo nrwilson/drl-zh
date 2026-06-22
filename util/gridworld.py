@@ -298,11 +298,15 @@ def plot_grid(grid, qtable=None, agent_pos: tuple[int, int] = None):
     ax.axes.get_xaxis().set_ticklabels([])
     ax.axes.get_yaxis().set_ticklabels([])
     ax.grid()
-    plt.show()
+    # plot_grid only builds the figure; callers (run_simulation) decide how to
+    # render it. Showing here would pop a blocking window on every call.
     return fig, PlotData(grid, ax, agent_marker, state_value_texts)
 
 
 def run_simulation(mdp, policy, max_iterations=20, frames_per_state=10, live=False):
+    # Discard figures left open by earlier steps (e.g. test_value_iteration's
+    # plot_grid) so only this animation is shown.
+    plt.close("all")
     steps = simulate_mdp(mdp, policy, max_iterations)
 
     # Compute cumulative returns for convenience

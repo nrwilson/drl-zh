@@ -13,4 +13,6 @@ def init_random(random_seed=10):
 from util.gridworld import RANDOM_POLICY, GRID_WORLD_MDP, run_simulation
 
 init_random()
-run_simulation(GRID_WORLD_MDP, RANDOM_POLICY)
+# Don't run a simulation just because this module is imported — run.py drives
+# the simulations explicitly. Uncomment to demo the random policy on import.
+# run_simulation(GRID_WORLD_MDP, RANDOM_POLICY)

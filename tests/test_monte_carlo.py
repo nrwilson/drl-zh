@@ -18,4 +18,4 @@ def test_monte_carlo(mdp):
     biased_q[State(2, 0), Action.UP] = 0.1
 
     minimal_exploration_policy, Q = monte_carlo(ENV, NUM_EPISODES, eps_start=0.05, start_q=biased_q)
-    run_simulation(ENV.mdp, minimal_exploration_policy, live=True)
+    run_simulation(ENV.mdp, minimal_exploration_policy)
