@@ -14,10 +14,13 @@ def monte_carlo(env: GridEnv, num_episodes, alpha=0.02, eps_start=1.0, start_q: 
     
     A Monte Carlo algorithm for reinforcement learning."""
     # Initialize the QTable (use start_q if provided, you'll see why later)
-    Q = start_q
+    if not start_q:
+        Q = QTable(env.mdp.all_states, env.mdp.all_actions)
+    else:
+        Q = start_q
 
     # Prepare to generate epsilon creating the generator.
-    epsilon = epsilon_generator()
+    epsilon = epsilon_generator(eps_start=eps_start)
 
     # Iterate until we reached the maximum number of episodes for learning.
     for i_episode in range(1, num_episodes + 1):
@@ -69,7 +72,6 @@ def update_q_table(Q: QTable, states: [State], actions: [Action], rewards: [floa
     # and the discount based on how far in the future encountered.
 
     # Get the state, action pair from the episode.
-    num_steps = len(states)
     old_Q = Q
     for t, state in enumerate(states):
         action = actions[t]
@@ -77,7 +79,7 @@ def update_q_table(Q: QTable, states: [State], actions: [Action], rewards: [floa
         #       G_0 = R_1 + gamma * R_2 + gamma^2 * R_3 + ... (R1 is found at index 0)
         #       Hint: sum rewards _from_ `t` onward, while select discounts _until_ `t`. That is
         #       because discounts always start from the beginning even if rewards "shift".
-        these_rewards = rewards[t: num_steps-t]
+        these_rewards = rewards[t:]
         G_t = 0
         for i, reward in enumerate(these_rewards):
             discount = discounts[i]

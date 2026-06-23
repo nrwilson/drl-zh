@@ -1,3 +1,9 @@
+import random
+import numpy as np
+
+random.seed(0)
+np.random.seed(0)
+
 from tests import test_grid_env
 from tests.test_grid import test_grid
 from tests.test_grid_mdp import test_grid_mdp

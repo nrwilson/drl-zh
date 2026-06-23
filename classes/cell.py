@@ -10,4 +10,4 @@ class Cell(StrEnum):
     WALL = "W"
     BOMB = "B"
     NUKE = "N"
-    GAME_WIN = "G"
+    GLORY = "G"

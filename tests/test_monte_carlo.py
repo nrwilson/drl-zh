@@ -4,6 +4,7 @@ from classes.action import Action
 from classes.q_table import QTable
 from methods.monte_carlo import monte_carlo
 from util.gridworld import run_simulation
+from methods.evaluate_policy import sweep_epsilon
 
 
 def test_monte_carlo(mdp):
@@ -17,5 +18,11 @@ def test_monte_carlo(mdp):
     biased_q[State(1, 0), Action.RIGHT] = 0.1
     biased_q[State(2, 0), Action.UP] = 0.1
 
-    minimal_exploration_policy, Q = monte_carlo(ENV, NUM_EPISODES, eps_start=0.05, start_q=biased_q)
-    run_simulation(ENV.mdp, minimal_exploration_policy)
+    # minimal_exploration_policy, Q = monte_carlo(ENV, NUM_EPISODES, eps_start=0.05, start_q=biased_q)
+    # run_simulation(ENV.mdp, minimal_exploration_policy)
+
+    # # With exploration
+    # optimal_policy, Q = monte_carlo(ENV, NUM_EPISODES, eps_start=1.0, start_q=biased_q)
+    # run_simulation(ENV.mdp, optimal_policy)
+
+    sweep_epsilon(ENV)

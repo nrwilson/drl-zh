@@ -37,6 +37,6 @@ def epsilon_generator(eps_start=1.0, eps_decay=0.99999, eps_min=0.05):
     """Generator function for Ɛ and its decay (e.g., exploration via Ɛ-greedy policy)."""
     eps = eps_start
     while True:
-        # TODO: Yield and update eps, selecting the max(eps * decay, eps_min).
+        # Yield and update eps, selecting the max(eps * decay, eps_min).
         yield(eps)
         eps = max(eps * eps_decay, eps_min)

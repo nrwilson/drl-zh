@@ -41,7 +41,7 @@ class GridMDP:
     def is_terminal(self, state: State) -> bool:
         """Determines if the `state` is a terminal state."""
         cell = self.observe(state)
-        is_terminal = cell == Cell.TARGET or cell == Cell.BOMB or cell == Cell.NUKE or cell == Cell.GAME_WIN
+        is_terminal = cell == Cell.TARGET or cell == Cell.BOMB or cell == Cell.NUKE or cell == Cell.GLORY
         return is_terminal
 
     def is_reachable(self, state: State) -> bool:
@@ -80,7 +80,7 @@ class GridMDP:
             return -1.0
         elif self.observe(next_state) == Cell.NUKE:
             return -10.0
-        elif self.observe(next_state) == Cell.GAME_WIN:
+        elif self.observe(next_state) == Cell.GLORY:
             return 10.0
         else:
             return 0
