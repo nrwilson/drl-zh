@@ -5,6 +5,8 @@ from classes.q_table import QTable
 from methods.monte_carlo import monte_carlo
 from util.gridworld import run_simulation
 from methods.evaluate_policy import sweep_epsilon
+from methods.q_learning import q_learning
+from methods.sarsa import sarsa
 
 
 def test_monte_carlo(mdp):
@@ -25,4 +27,9 @@ def test_monte_carlo(mdp):
     # optimal_policy, Q = monte_carlo(ENV, NUM_EPISODES, eps_start=1.0, start_q=biased_q)
     # run_simulation(ENV.mdp, optimal_policy)
 
-    sweep_epsilon(ENV)
+    # sweep_epsilon(ENV)
+    # opt_policy, Q = q_learning(ENV, 100_000)
+    # run_simulation(ENV.mdp, opt_policy)
+
+    sarsa_policy, Q = sarsa(ENV, 100_000)
+    run_simulation(ENV.mdp, sarsa_policy)
