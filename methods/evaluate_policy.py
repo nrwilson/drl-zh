@@ -82,9 +82,10 @@ def compare_algorithms(env: GridEnv):
     biased_q[State(1, 0), Action.RIGHT] = 0.1
     biased_q[State(2, 0), Action.UP] = 0.1
     for name, fn in [
-        ("Monte Carlo", monte_carlo(env, NUM_EPISODES, 0.02, 1.0, biased_q)),
-        ("Q-Learning", q_learning(env, NUM_EPISODES)),
-        ("SARSA", sarsa(env, NUM_EPISODES)),
+        # Monte Carlo needs more episodes to overcome its biased q table.
+        ("Monte Carlo", lambda: monte_carlo(env, NUM_EPISODES*10, 0.02, 1.0, biased_q)),
+        ("Q-Learning", lambda: q_learning(env, NUM_EPISODES)),
+        ("SARSA", lambda: sarsa(env, NUM_EPISODES)),
     ]:
         policy, _ = fn()
         results.append((name, evaluate_policy(env, policy), terminal_breakdown(env, policy)))

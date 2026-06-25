@@ -7,7 +7,7 @@ from util.gridworld import run_simulation
 from methods.evaluate_policy import compare_algorithms, sweep_epsilon
 from methods.q_learning import q_learning
 from methods.sarsa import sarsa
-from init import init_random
+from init.init_simulation import init_random
 
 
 def test_monte_carlo(mdp):

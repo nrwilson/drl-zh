@@ -7,6 +7,7 @@ def sarsa(env: GridEnv, num_episodes, alpha=0.02, max_t=10):
     """Runs SARSA (on-policy TD)."""
     # Initialize the QTable and the epsilon generator (same as Q-Learning).
     Q = QTable(env.mdp.all_states, env.mdp.all_actions)
+    # Setting eps_decay to 0.99999 helps optimize- otherwise it explores too long and doesn't find the exploit.
     epsilon = epsilon_generator(eps_start=1.0, eps_decay=0.999999, eps_min=0.05)
     for i_episode in range(1, num_episodes + 1):
         t = 0
