@@ -1,3 +1,4 @@
+from tkinter import Grid
 from classes.grid_env import GridEnv
 from classes.q_table import QTable
 from classes.action import Action
@@ -5,6 +6,8 @@ from classes.state import State
 from methods.policies import Policy
 from methods.monte_carlo import monte_carlo, generate_episode, unpack_episode
 from methods.greedy_policy import epsilon_greedy_policy
+from methods.q_learning import q_learning
+from methods.sarsa import sarsa
 import numpy as np
 import random
 
@@ -66,3 +69,31 @@ def terminal_breakdown(env: GridEnv, policy: Policy, n_eval=200, max_t=20) -> di
         else:
             counts["truncated"] += 1
     return counts
+
+
+def compare_algorithms(env: GridEnv):
+
+    NUM_EPISODES = 30_000
+    results = []
+    # TODO: replace each `None` with a lambda that trains the corresponding algorithm on ENV for
+    #       NUM_EPISODES. For MC, pass `start_q=biased_q` to reuse the starting Q-table from earlier.
+    biased_q = QTable(env.mdp.all_states, env.mdp.all_actions)
+    biased_q[State(0, 0), Action.RIGHT] = 0.1
+    biased_q[State(1, 0), Action.RIGHT] = 0.1
+    biased_q[State(2, 0), Action.UP] = 0.1
+    for name, fn in [
+        ("Monte Carlo", monte_carlo(env, NUM_EPISODES, 0.02, 1.0, biased_q)),
+        ("Q-Learning", q_learning(env, NUM_EPISODES)),
+        ("SARSA", sarsa(env, NUM_EPISODES)),
+    ]:
+        policy, _ = fn()
+        results.append((name, evaluate_policy(env, policy), terminal_breakdown(env, policy)))
+
+    print()
+    print(f"{'Algorithm':<15} | {'Avg. Return':>12} | {'Glory':>6} | {'Target':>6} | {'trunc':>6}")
+    print("-" * 60)
+    for name, ret, br in results:
+        print(
+            f"{name:<15} | {ret:>12.3f} | "
+            f"{br['Glory']:>6d} | {br['Target']:>6d} | {br['truncated']:>6d}"
+        )
