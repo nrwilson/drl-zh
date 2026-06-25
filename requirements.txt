@@ -1,5 +1,12 @@
+ale-py
 gymnasium
+gymnasium[other]
+imageio
 IPython
 matplotlib
+moviepy
 numpy
+pandas
+pettingzoo
+pygame
 torch

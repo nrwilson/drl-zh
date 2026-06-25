@@ -22,21 +22,25 @@ from tests.test_episode import test_episode
 from tests.test_greedy_policy import test_greedy_policy, test_epsilon_greedy_policy, test_epsilon_generator
 from tests.test_monte_carlo import test_monte_carlo
 
+from dqn.simulate import gym_simulate
 
 # Notebook 1 - Grid
-grid = test_grid()
-mdp = test_grid_mdp(grid)
-test_q_table()
-test_value_iteration(mdp)
+# grid = test_grid()
+# mdp = test_grid_mdp(grid)
+# test_q_table()
+# test_value_iteration(mdp)
 # test_grid_env(grid)
 # test_cliff_world()
 
 # Notebook 2 - RL
-mdp2 = init_rl()
-assert Policy == Callable[[State], Action]
-assert Episode == list[tuple[State, Action, float]]
-test_episode(mdp2)
-test_greedy_policy()
-test_epsilon_greedy_policy()
-test_epsilon_generator()
-test_monte_carlo(mdp2)
+# mdp2 = init_rl()
+# assert Policy == Callable[[State], Action]
+# assert Episode == list[tuple[State, Action, float]]
+# test_episode(mdp2)
+# test_greedy_policy()
+# test_epsilon_greedy_policy()
+# test_epsilon_generator()
+# test_monte_carlo(mdp2)
+
+# Notebook 3 - DQN
+gym_simulate()
