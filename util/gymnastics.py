@@ -54,13 +54,15 @@ def epsilon_gen(eps_start=1.0, eps_decay=0.99999, eps_min=0.05):
         eps = max(eps * eps_decay, eps_min)
 
 
-def show_gym_video_recording(name_prefix: str = "rl-video", folder: str = None):
+def show_gym_video_recording(name_prefix: str = "rl-video", folder: str = None, gif_file: str = None):
     """Shows the recorded video of episode 0 of a gym environment."""
     if folder == None:
         folder = tempfile.gettempdir()
     video_file = os.path.join(folder, f"{name_prefix}-episode-0.mp4")
     video_clip = moviepy.VideoFileClip(video_file)
-    gif_file = os.path.join(tempfile.gettempdir(), "rl-video.gif")
+    if gif_file == None:
+        gif_file = os.path.join(folder, f"{name_prefix}.gif")
+    os.makedirs(os.path.dirname(os.path.abspath(gif_file)), exist_ok=True)
     video_clip.write_gif(gif_file, fps=15)
     video_clip.close()
     return Image(open(gif_file, "rb").read())

@@ -1,5 +1,5 @@
 import random
-import tempfile
+import os
 
 import numpy as np
 import torch
@@ -29,7 +29,8 @@ def gym_simulate(agent=None):
     #       operations for learning (see documentation).
     sim_env = AtariPreprocessing(sim_env)
     # Adding the RecordVideo wrapper to be able to record videos.
-    sim_env = RecordVideo(sim_env, tempfile.gettempdir(), lambda i: i == 0)
+    video_folder = os.path.join(os.path.dirname(os.path.dirname(__file__)), "videos")
+    sim_env = RecordVideo(sim_env, video_folder, lambda i: i == 0)
 
     # Reset the environment
     init_position, _ = sim_env.reset()
@@ -55,4 +56,4 @@ def gym_simulate(agent=None):
     sim_env.close()
 
     # Call a convenient utility function to show the video in the notebook as a GIF.
-    return show_gym_video_recording()
+    return show_gym_video_recording(folder=video_folder)
