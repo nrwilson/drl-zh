@@ -16,7 +16,7 @@ from util.gymnastics import DEVICE, init_random, plot_scores, show_gym_video_rec
 
 # Let's learn Gymnasium! https://ale.farama.org/environments/pong/
 def gym_simulate(agent=None):
-    """Runs an Atari pong game with our agent passed as input."""
+    """Runs an Atari pong game with our agent passed as input - run 2500 steps."""
     # We use pong deterministic b/c it is simpler to train.
     # Actions: NOOP, FIRE, RIGHT, LEFT, RIGHTFIRE, LEFTFIRE
     # Use gym.make to create the "ALE/Pong-v5" environment. Also, pass the render_mode
@@ -43,7 +43,10 @@ def gym_simulate(agent=None):
     for _ in range(2_500):
         # Call agent.act if the agent is specified, otherwise use action_space.sample() from
         #       the gym environment to select a random action.
-        action = sim_env.action_space.sample()
+        if agent:
+            action = agent.act(state)
+        else:
+            action = sim_env.action_space.sample()
         # Perform an environment step.
         observation, _, terminated, truncated, _ = sim_env.step(action)
         # Check for completion, if completed reset the environment.
@@ -52,7 +55,7 @@ def gym_simulate(agent=None):
         # Update the state with the new stacked observations (the last and the new one)
         state = np.stack([state[1], observation])
 
-    # TODO: Remember to close the gym environment!
+    # Remember to close the gym environment!
     sim_env.close()
 
     # Call a convenient utility function to show the video in the notebook as a GIF.

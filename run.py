@@ -23,6 +23,10 @@ from tests.test_greedy_policy import test_greedy_policy, test_epsilon_greedy_pol
 from tests.test_monte_carlo import test_monte_carlo
 
 from dqn.simulate import gym_simulate
+from tests.test_q_network import test_q_network
+from dqn.replay_buffer import test_replay_buffer
+from dqn.train import pretrained_simulation, train_agent
+
 
 # Notebook 1 - Grid
 # grid = test_grid()
@@ -43,4 +47,8 @@ from dqn.simulate import gym_simulate
 # test_monte_carlo(mdp2)
 
 # Notebook 3 - DQN
-gym_simulate()
+# gym_simulate()
+# test_q_network()
+# test_replay_buffer()
+# pretrained_simulation()
+train_agent()
